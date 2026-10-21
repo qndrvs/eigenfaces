@@ -1,0 +1,11 @@
+# LaTeX
+*.aux
+*.log
+*.pdf
+
+# Python
+__pycache__/
+*.pyc
+
+# VSCode
+.vscode/
