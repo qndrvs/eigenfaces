@@ -1,0 +1,45 @@
+\documentclass[conference]{IEEEtran}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\title{Sistema de Reconocimiento Facial basado en Eigenfaces mediante PCA y SVD}
+
+\author{
+    \IEEEauthorblockN{Ipanaqué Torres, Jesús Andrés}
+    \IEEEauthorblockA{
+        Facultad de Ciencias\\
+        Universidad Nacional de Ingeniería\\
+        Lima, Perú
+    }
+}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Los sistemas de reconocimiento facial modernos basados en redes neuronales 
+presentan evidentes limitaciones en cuanto a interpretación matemática y costo computacional.
+En el presente trabajo, se propone un sistema de reconocimiento facial basado en el algoritmo 
+de Eigenfaces, desarrollado por Turk y Pentland (1991), haciendo uso de Principal Component 
+Analysis (PCA) a través de la Singular Value Decomposition (SVD).
+La implementación se realizará en Python haciendo uso exclusivo de NumPy, evitando librerías 
+de alto nivel, con el fin de exponer la estructura algebraica del reconocimiento de patrones faciales.
+Se emplea la base de datos AT\&T Database of Faces para la evaluación del sistema.
+El sistema representa cada imagen como un vector en un espacio de alta dimensión, 
+calcula el ``rostro promedio'' y centra los datos para luego aplicar SVD sobre la 
+matriz de rostros centrados, obteniendo las componentes principales denominadas eigenfaces, 
+que capturan las direcciones de máxima varianza.
+Un ``rostro nuevo'' es reconocido proyectándolo al subespacio reducido y calculando 
+su distancia euclidiana respecto a los rostros de la base de datos.
+Se evalúa la tasa de reconocimiento en función del número de componentes principales 
+retenidas $k$, analizando el equilibrio entre precisión y reducción dimensional.
+Se espera demostrar que un sistema matemáticamente interpretable y computacionalmente 
+ligero puede alcanzar tasas de reconocimiento aceptables sobre la base de datos.
+\end{abstract}
+
+\end{document}
