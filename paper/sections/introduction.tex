@@ -1,0 +1,72 @@
+\section{Introduction}
+
+El reconocimiento facial es un problema clásico de la visión computacional,
+pues trae consigo aplicaciones en seguridad, autenticación y análisis biométrico.
+En la actualidad, el avance de las redes neuronales profundas
+ha permitido lograr tasas de reconocimiento altas que antes eran inimaginables;
+sin embargo, esto lleva consigo una limitación estructural fundamental:
+funcionamiento interno ininterpretable, lo que dificulta en gran medida el análisis, corrección y aplicación del mismo
+y más aún en contextos en los cuales es necesaria la transparencia. En sistemas de identificación
+judicial, si el sistema de reconocimiento facial es usado para identificar
+a una persona como sospechosa, es posible que al querer impugnar alguna decisión, resulta
+imposible hacerlo con un sistema basado en redes neuronales, pues
+no hay estructura matemática que auditar ni forma de demostrar cómo y por qué el sistema falló
+obligando así a depender de pruebas empíricas exhaustivas en lugar de un análisis formal.
+En sistemas de infraestructura crítica, como el control a plantas de energía,
+instalaciones militares o bancos, es un requisito que sea posible auditarlo de manera formal
+y no a base de experimentos. En el ámbito de la investigación, en el cual,
+generalmente, para construir sobre un resultado es necesario saber el cómo y
+por qué funciona, un modelo ininterpretable no permite derivar mejoras teóricas.
+
+El presente trabajo propone un sistema alternativo basado en álgebra lineal: el algoritmo Eigenfaces
+planteado por Turk y Pentland en 1991 como una de las soluciones pioneras computacionalmente viables
+al problema del reconocimiento facial teniendo en cuenta la limitada capacidad computacional de ese
+entonces al reemplazar la comparación pixel por pixel a la proyección de rostros en un subespacio
+con menor dimensión.
+A diferencia de los sistemas que hacen uso de las redes neuronales, los cuales se denominan
+como ``caja negra'' debido a su ininterpretabilidad, Eigenfaces exhibe los patrones de variación
+utilizados para el reconocimiento de rostros, permitiendo así el análisis e interpretación
+del proceso de reconocimiento. El sistema es construido en Python haciendo uso exclusivo de la
+librería Numpy con el fin de conservar la mayor transparencia posible de la estructura algebraica.
+En la actualidad, pese a ser un sistema menos preciso que el sistema basado en redes neuronales,
+Eigenfaces conserva importancia en ser aprendido como modelo de estudio, pues al exponer de
+manera explícita los fundamentos matemáticos del reconocimiento de patrones (reducción 
+dimensional, análisis de varianza, proyección en subespacios, ...) permite construir 
+intuición sobre el problema antes de abordar sistemas con mayor ininterpretabilidad, permitiendo
+así una comprensión más profunda de los conceptos para luego abordar sistemas de mayor complejidad
+y no limitarse a solo aplicar lo ya establecido.
+
+Se establecen los siguientes objetivos específicos para el presente trabajo:
+(1) implementación del algoritmo Eigenfaces haciendo uso exclusivo de operaciones
+de álgebra lineal sobre Numpy;
+(2) análisis de las implicaciones de los números de componentes utilizados $k$
+sobre la tasa de reconocimiento del sistema; y
+(3) demostración de que un modelo matemáticamente interpretable es viable
+frente a sistemas de mayor complejidad computacional (como es el caso de las redes neuronales).
+Los objetivos en cuestión buscan demostrar que la interpretabilidad matemática 
+y la eficiencia computacional no son excluyentes, que un sistema desarrollado
+a base de fundamentos matemáticos sólidos puede constituir una herramienta
+válida tanto para su aplicación como su uso para la formación y comprensión de los
+principios del reconocimiento facial.
+
+El presente sistema se limita al reconocimiento facial en condiciones controladas
+haciendo uso de la base de datos AT\&T Database of Faces, el cual contiene 400 imágenes
+de 40 sujetos diferenciables con iluminación y pose uniforme; por tanto, no se abordará
+el reconocimiento facial en tiempo real ni la previa detección facial, asimismo, se asume
+que las imágenes de entrada ya están recortadas y alineadas.
+Además, el sistema se enmarca en el contexto del aprendizaje automático clásico,
+en el subcampo de reconocimiento de patrones basado en métodos algebraicos y
+estadísticos, específicamente. El sistema trabaja eficientemente con conjuntos de
+datos pequeños a diferencia de otros enfoques modernos que, para buenos resultados,
+requieren obligatoriamente de grandes volúmenes de datos y recursos computacionales,
+pues para diferenciar rostros no siguen un procedimiento matemático específico,
+sino que ``aprenden'' a base de prueba y error; por tanto, el sistema planteado
+ofrece una alternativa viable en escenarios con recursos limitados y esta ventaja
+cobra relevancia en aquellos donde la recopilación masiva de datos biométricos presenta
+restricciones éticas o logísticas. Para finalizar, es importante mencionar que 
+el presente trabajo no busca competir con otros modelos en materia de precisión,
+sino demostrar que es posible construir un sistema de reconocimiento facial viable
+a partir de herramientas matemáticas elementales. El valor del trabajo consiste
+en la transparencia del proceso al mostrar de manera explícita la justificación
+algebraica, hacer posible el análisis de cada resultado y predecible cada limitación
+generada por la estructura del sistema.
