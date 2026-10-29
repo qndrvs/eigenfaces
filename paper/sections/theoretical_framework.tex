@@ -68,3 +68,67 @@ Donde \textbf{1} $= [1, 1, \dots, 1]^T \in \mathbb{R}^N$. Este proceso es crucia
 para el análisis posterior, pues se captura las direcciones de la máxima
 varianza entre rostros en lugar de  obtener características simples del
 rostro promedio.
+
+
+\subsection{Covarianza entre Píxeles}
+
+Sea el conjunto de $N$ imágenes centradas, la matriz de datos centrados $\tilde{X}$
+y los pixeles en posición $i$ y $j$ de cada imagen centrada. Se define la
+\textbf{covarianza} $c_{ij} \in \mathbb{R}$ entre los pixeles $i$ y $j$ tal que:
+\[
+c_{ij} = \frac{1}{N-1}\sum_{k=1}^{N} \tilde{x}_{ki}\,\tilde{x}_{kj}
+\]
+Donde $i, j \in \{1, 2, \dots, mn\}$ y $\tilde{x}_{kp}$ es el valor del pixel $p$
+en la imagen centrada $k$. Si el valor de $c_{ij}$ es grande implica que ambos pixeles
+varían de forma correlacionada entre rostros distintos; es decir, pertenecen al mismo
+patrón de variación facial. La identificación de estos patrones es fundamental para
+determinar qué combinaciones de pixeles son las más discriminativas entre rostros.
+
+
+\subsection{Matriz de Covarianza}
+
+Sea la matriz de datos centrados $\tilde{X}$.
+Se define la \textbf{matriz de covarianza} $C = [c_{ij}] \in \mathbb{R}^{mn \times mn}$
+tal que:
+\[
+C = \frac{1}{N-1}\tilde{X}^T\tilde{X}
+\]
+Pues, por definición de la multiplicación matricial:
+\[
+c_{ij} = \frac{1}{N-1}\sum_{k=1}^{N} \tilde{x}_{ki}\,\tilde{x}_{kj}
+\qquad \forall \, i, j \in \{1, 2, \dots, mn\}
+\]
+Donde $c_{ij}$ representa la covarianza entre el pixel $i$ y $j$
+a lo largo de las $N$ imágenes, capturando simultáneamente todos los patrones
+de variación entre rostros. Esta estructura es la base matemática para
+identificar las direcciones en las cuales los rostros más se diferencian entre sí.
+
+Al ser imágenes de $m \times n$ pixeles implica que $C$ tiene dimensión de $mn \times mn$;
+por tanto, para imágenes de $100 \times 100$ pixeles la matriz $C$ tendrá
+$10000 \times 10000$ componentes, lo cual hace computacionalmente inviable el 
+tratar con esta matriz al calcular o almacenar directamente. Este problema de
+dimensionalidad impulsa el uso de Singular Value Decomposition (SVD) la cual
+permite obtener información relevante de $C$ sin necesidad de calcular
+directamente.
+
+
+\subsection{Eigenvectores y Eigenvalores}
+
+Sea $A \in \mathbb{R}^{n \times n}$ una matriz cuadrada. Se define el 
+\textbf{eigenvector} $\mathbf{v} \in \mathbb{R}^n \setminus \{\mathbf{0}\}$ de $A$
+tal que:
+\[
+\exists \lambda \in \mathbb{R} / A\mathbf{v} = \lambda\mathbf{v}
+\]
+Donde $\lambda$ es el \textbf{eigenvalor} asociado
+a $\mathbf{v}$.
+
+Geométricamente, un eigenvector es una dirección que la transformación
+lineal $A$ preserva; es decir, $A$ únicamente escala su magnitud por el
+factor $\lambda$ sin alterar su orientación. Un $|\lambda|$ elevado implica
+un alargamiento fuerte en esa dirección, mientras que $\lambda = 0$ implica
+que $A$ colapsa esa dirección.
+
+Esta noción es crucial para el posterior análisis a $C$; pues, los eigenvectores
+de $C$ son las direcciones de máxima varianza en el espacio de imágenes y sus
+eigenvalores indican el valor de esta varianza.
