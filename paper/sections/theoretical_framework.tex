@@ -1,0 +1,70 @@
+\section{Theoretical Framework}
+
+\subsection{Representación Matricial de Imágenes}
+
+Sea una imagen en escala de grises de $m \times n$ pixeles. Se define
+la \textbf{representación de la imagen} ${A = [a_{ij}]} \in \mathbb{R}^{m \times n}$
+tal que:
+\[
+a_{ij} \text{: valor de intensidad del pixel en la fila $i$ y columna $j$}
+\]
+Donde $a_{ij} \in [0, 255]$. Para poder aplicar herramientas de álgebra lineal
+de la manera adecuada sobre un conjunto de imágenes es necesario representar
+a cada imagen como un vector; por tanto, se aplicará un proceso de vectorización
+a cada matriz que represente una imagen.
+
+
+\subsection{Vectorización de una Matriz}
+
+Sea la matriz $A = [a_{ij}] \in \mathbb{R}^{m \times n}$ que representa a una
+imagen de $m \times n$ pixeles. Se define el \textbf{vector asociado}
+$\mathbf{x} \in \mathbb{R}^{mn}$ tal que:
+\[
+\mathbf{x} = \text{vec}(A) = [a_{11}, a_{12}, \dots, a_{1n},
+a_{21}, \dots, a_{mn}]^T
+\]
+Donde $\mathbf{x}$ es el resultado de la concatenación de las filas de A en
+orden.
+
+
+\subsection{Matriz de Datos}
+
+Sea un conjunto de $N$ imágenes y la matriz vectorizada $\mathbf{x}_{i}$ que
+representa a la imagen $i \in \{1, 2, \dots, N\}$. Se define \textbf{la matriz
+de datos} $X \in \mathbb{R}^{N \times mn}$ tal que:
+\[
+X = \begin{bmatrix}
+    \mathbf{x}_1^T \\ \mathbf{x}_2^T \\ \vdots \\ \mathbf{x}_N^T
+\end{bmatrix}
+\]
+Donde $\mathbf{x}_i$ representa la fila $i$ de $X$. Esta representación permite
+tratar cada imagen como un punto en un espacio vectorial de dimensión $mn$,
+haciendo posible el análisis estadístico que se desarrolla en las secciones
+siguientes.
+
+
+\subsection{Rostro Promedio}
+
+Sea el conjunto de $N$ imágenes vectorizadas y la matriz $X$ conformada
+por el conjunto de imágenes vectorizadas. Se define el \textbf{rostro promedio}
+$\bar{\mathbf{x}} \in \mathbb{R}^{mn}$ tal que:
+\[
+\bar{\mathbf{x}} = \frac{1}{N} \sum_{i=1}^{N} \mathbf{x}_i
+\]
+Al conseguir este ``rostro promedio'', podemos realizar el proceso de centrado de
+datos el cual consiste en restar el ``rostro promedio'' a cada imagen vectorizada.
+
+
+\subsection{Centrado de Datos}
+
+Sea el conjunto de $N$ imágenes vectorizadas, la matriz $X$ conformada
+por el conjunto de imágenes vectorizadas y el rostro promedio $\bar{\mathbf{x}}$.
+Se define la \textbf{matriz de datos centrados} $\tilde{X} \in
+\mathbb{R}^{N \times mn}$ tal que:
+\[
+\tilde{X} = X - \mathbf{1}\bar{\mathbf{x}}^T
+\]
+Donde \textbf{1} $= [1, 1, \dots, 1]^T \in \mathbb{R}^N$. Este proceso es crucial
+para el análisis posterior, pues se captura las direcciones de la máxima
+varianza entre rostros en lugar de  obtener características simples del
+rostro promedio.
