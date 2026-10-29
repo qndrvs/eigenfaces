@@ -132,3 +132,98 @@ que $A$ colapsa esa dirección.
 Esta noción es crucial para el posterior análisis a $C$; pues, los eigenvectores
 de $C$ son las direcciones de máxima varianza en el espacio de imágenes y sus
 eigenvalores indican el valor de esta varianza.
+
+
+\subsection{Producto Interno}
+
+Sean los vectores $\mathbf{x}, \mathbf{y} \in \mathbb{R}^n$. Se define el
+\textbf{producto interno} $\langle \mathbf{x}, \mathbf{y} \rangle
+\in \mathbb{R}$ tal que:
+\[
+\langle \mathbf{x}, \mathbf{y} \rangle = \mathbf{x}^T\mathbf{y}
+= \sum_{i=1}^{n} x_i\,y_i
+\]
+Donde $x_i$ e $y_i$ son las componentes $i$-ésimas de $\mathbf{x}$ e
+$\mathbf{y}$, respectivamente. Esta operación permite medir la relación
+entre dos vectores; asimismo, es la base para definir longitud y
+perpendicularidad.
+
+
+\subsection{Norma}
+
+Sea el vector $\mathbf{x} \in \mathbb{R}^n$. Se define la \textbf{norma}
+$\|\mathbf{x}\|$ de $\mathbf{x}$ tal que:
+\[
+\|\mathbf{x}\| = \sqrt{\langle \mathbf{x}, \mathbf{x} \rangle}
+= \sqrt{\sum_{i=1}^{n} x_i^2}
+\]
+La norma de $\mathbf{x}$, $\|\mathbf{x}\|$, representa la longitud del vector.
+
+
+\subsection{Vector Unitario}
+
+Sea el vector $\mathbf{x} \in \mathbb{R}^n$. Se dice que $\mathbf{x}$ es un
+\textbf{vector unitario} si:
+\[
+\|\mathbf{x}\| = 1
+\]
+
+
+\subsection{Ortogonalidad}
+
+Sean los vectores $\mathbf{x}, \mathbf{y} \in \mathbb{R}^n$. Se dice que
+$\mathbf{x}$ e $\mathbf{y}$ son \textbf{ortogonales} si:
+\[
+\langle \mathbf{x}, \mathbf{y} \rangle = 0
+\]
+
+
+\subsection{Ortonormalidad}
+
+Sea el conjunto $S = \{\mathbf{v}_1, \mathbf{v}_2, \dots, \mathbf{v}_k\}
+\subset \mathbb{R}^n$. Se dice que $S$ es \textbf{ortonormal} si:
+\[
+\langle \mathbf{v}_i, \mathbf{v}_j \rangle = \delta_{ij}
+= \begin{cases}
+    1 & i = j \\
+    0 & i \neq j
+\end{cases} \qquad \forall \, i, j \in \{1, 2, \dots, k\}
+\]
+Donde $\delta_{ij}$ es el \textbf{delta de Kronecker}. Podemos interpretar
+la ortonormalidad como que los vectores son unitarios y además son
+ortogonales entre sí.
+
+
+\subsection{Matriz Ortogonal}
+
+Sea $Q = [\mathbf{q}_1 \mid \mathbf{q}_2 \mid \cdots \mid \mathbf{q}_n]
+\in \mathbb{R}^{n \times n}$. Se dice que $Q$ es \textbf{ortogonal} si:
+\[
+\{\mathbf{q}_1, \dots, \mathbf{q}_n\} \text{ es ortonormal}
+\]
+Donde se cumple $Q^TQ = I$; pues, el elemento $(i,j)$ de $Q^TQ$ es
+$\mathbf{q}_i^T\mathbf{q}_j = \delta_{ij}$, que es precisamente el elemento
+$(i,j)$ de la identidad $I$.
+
+
+\subsection{Matriz Simétrica}
+
+Sea la matriz cuadrada $A = [a_{ij}] \in \mathbb{R}^{n \times n}$. Se dice que $A$
+es \textbf{simétrica} si:
+\[
+A = A^T
+\]
+Donde $a_{ij} = a_{ji} \quad \forall i, j \in \{1, 2, \dots, n\}$; es decir,
+$A$ es simétrica respecto a su diagonal principal.
+
+
+\subsection{Matriz Semidefinida Positiva}
+
+Sea la matriz cuadrada simétrica $A \in \mathbb{R}^{n \times n}$. Se dice que
+$A$ es \textbf{semidefinida positiva} si:
+\[
+\mathbf{x}^TA\,\mathbf{x} \geq 0 \qquad \forall \, \mathbf{x} \in \mathbb{R}^n
+\]
+Esta propiedad garantiza que los eigenvalores de $A$ son no negativos,
+lo cual es esencial para el análisis de $\tilde{X}^T\tilde{X}$ en las subsecciones
+posteriores.
