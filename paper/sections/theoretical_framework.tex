@@ -227,3 +227,107 @@ $A$ es \textbf{semidefinida positiva} si:
 Esta propiedad garantiza que los eigenvalores de $A$ son no negativos,
 lo cual es esencial para el análisis de $\tilde{X}^T\tilde{X}$ en las subsecciones
 posteriores.
+
+
+\subsection{Teorema Espectral}
+
+Sea la matriz simétrica $A \in \mathbb{R}^{n \times n}$. Se enuncia el
+\textbf{teorema espectral} \cite[Thm.~4.1.5]{horn2013matrix} tal que:
+\[
+\exists \, Q \in \mathbb{R}^{n \times n} \text{ ortogonal}, \;
+\Lambda = \text{diag}(\lambda_1, \lambda_2, \dots, \lambda_n) \;/\;
+A = Q\Lambda Q^T
+\]
+Donde $\lambda_i \in \mathbb{R}$. Este resultado se utilizará sin demostración.
+
+Sea $Q = [\mathbf{q}_1 \mid \mathbf{q}_2 \mid \cdots \mid \mathbf{q}_n]$ y 
+el $i$-ésimo vector canónico $\mathbf{e}_i \in \mathbb{R}^n$. Se tiene:
+\[
+AQ = Q\Lambda Q^TQ = Q\Lambda I = Q\Lambda
+\]
+La columna $i$ de $AQ$ es $A\mathbf{q}_i$. Por otro lado, al ser $\Lambda$ diagonal
+se cumple $\Lambda\mathbf{e}_i = \lambda_i\mathbf{e}_i$; por tanto, la columna $i$
+de $Q\Lambda$ es:
+\[
+Q(\Lambda\mathbf{e}_i) = \lambda_i Q\mathbf{e}_i = \lambda_i\mathbf{q}_i
+\]
+Igualando ambas columnas se obtiene:
+\[
+A\mathbf{q}_i = \lambda_i\mathbf{q}_i \qquad \forall \, i \in \{1, 2, \dots, n\}
+\]
+Donde $\mathbf{q}_i \neq \mathbf{0}$, pues $\|\mathbf{q}_i\| = 1$ al ser $Q$ ortogonal;
+por tanto, las columnas de $Q$ forman un conjunto ortonormal de eigenvectores
+de $A$, y $\lambda_i$ es el eigenvalor asociado a $\mathbf{q}_i$.
+
+
+\subsection{Propiedades de $\tilde{X}^T\tilde{X}$}
+
+\textbf{Lema.} Sea la matriz $\tilde{X} \in \mathbb{R}^{N \times mn}$. Se cumple
+que $\tilde{X}^T\tilde{X} \in \mathbb{R}^{mn \times mn}$ es simétrica y
+semidefinida positiva; es decir:
+\[
+(\tilde{X}^T\tilde{X})^T = \tilde{X}^T\tilde{X}
+\;\land\;
+\mathbf{x}^T\tilde{X}^T\tilde{X}\,\mathbf{x} \geq 0
+\quad \forall \, \mathbf{x} \in \mathbb{R}^{mn}
+\]
+
+\textbf{Demostración.} Por propiedades de la transpuesta:
+\[
+(\tilde{X}^T\tilde{X})^T = \tilde{X}^T(\tilde{X}^T)^T = \tilde{X}^T\tilde{X}
+\]
+$\therefore \tilde{X}^T\tilde{X}$ es simétrica.
+
+Sea $\mathbf{x} \in \mathbb{R}^{mn}$:
+\[
+\mathbf{x}^T\tilde{X}^T\tilde{X}\,\mathbf{x}
+= (\tilde{X}\mathbf{x})^T(\tilde{X}\mathbf{x})
+= \|\tilde{X}\mathbf{x}\|^2 \geq 0
+\]
+$\therefore \tilde{X}^T\tilde{X}$ es semidefinida positiva.
+
+\textbf{Corolario.} Sean $\mathbf{v} \in \mathbb{R}^{mn}$ con
+$\|\mathbf{v}\| = 1$ y $\lambda \in \mathbb{R}$. Se cumple:
+\[
+\tilde{X}^T\tilde{X}\,\mathbf{v} = \lambda\mathbf{v} \implies \lambda \geq 0
+\]
+
+\textbf{Demostración.} Como $\tilde{X}^T\tilde{X}\,\mathbf{v} = \lambda\mathbf{v}$
+y $\|\mathbf{v}\| = 1$:
+\[
+\lambda = \lambda\,\mathbf{v}^T\mathbf{v}
+= \mathbf{v}^T(\tilde{X}^T\tilde{X}\,\mathbf{v})
+= (\tilde{X}\mathbf{v})^T\tilde{X}\,\mathbf{v}
+= \|\tilde{X}\mathbf{v}\|^2 \geq 0
+\]
+$\therefore \lambda \geq 0$.
+
+
+\subsection{Valores Singulares}
+
+Sea la matriz simétrica $\tilde{X}^T\tilde{X} \in \mathbb{R}^{mn \times mn}$.
+Por el teorema espectral, existen la matriz ortogonal
+$V = [\mathbf{v}_1 \mid \cdots \mid \mathbf{v}_{mn}]$ y
+$\Lambda = \text{diag}(\lambda_1, \dots, \lambda_{mn})$ tales que
+$\tilde{X}^T\tilde{X} = V\Lambda V^T$; además, cada $\mathbf{v}_i$ es un
+eigenvector unitario de $\tilde{X}^T\tilde{X}$ con eigenvalor $\lambda_i$.
+Reordenando las columnas de $V$ y los elementos de $\Lambda$ de forma
+correspondiente si fuese necesario, se tiene $\lambda_1 \geq \lambda_2 \geq
+\cdots \geq \lambda_{mn}$, y por el corolario anterior $\lambda_i \geq 0$.
+Se definen los \textbf{valores singulares} de $\tilde{X}$ como:
+\[
+\sigma_i = \sqrt{\lambda_i} \qquad \forall \, i \in \{1, 2, \dots, mn\}
+\]
+Donde $\sigma_1 \geq \sigma_2 \geq \cdots \geq \sigma_{mn} \geq 0$ y $r$ denota
+la cantidad de valores singulares positivos. La raíz cuadrada está bien
+definida gracias a que $\tilde{X}^T\tilde{X}$ es semidefinida positiva.
+
+Los $\sigma_i$ tienen un significado geométrico directo:
+\[
+\|\tilde{X}\mathbf{v}_i\|^2 = \mathbf{v}_i^T\tilde{X}^T\tilde{X}\,\mathbf{v}_i
+= \lambda_i = \sigma_i^2
+\]
+Es decir, $\sigma_i$ es la longitud del vector $\tilde{X}\mathbf{v}_i \in
+\mathbb{R}^N$, cuyas componentes son las coordenadas de las $N$ imágenes
+centradas a lo largo de la dirección $\mathbf{v}_i$. Un $\sigma_i$ grande
+indica que los rostros se dispersan mucho en esa dirección.

@@ -2,6 +2,8 @@
 *.aux
 *.log
 *.pdf
+*.bbl
+*.blg
 
 # Python
 __pycache__/
