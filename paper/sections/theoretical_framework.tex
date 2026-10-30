@@ -331,3 +331,124 @@ Es decir, $\sigma_i$ es la longitud del vector $\tilde{X}\mathbf{v}_i \in
 \mathbb{R}^N$, cuyas componentes son las coordenadas de las $N$ imágenes
 centradas a lo largo de la dirección $\mathbf{v}_i$. Un $\sigma_i$ grande
 indica que los rostros se dispersan mucho en esa dirección.
+
+
+\subsection{Existencia de la SVD}
+
+\textbf{Teorema.} Sea la matriz $\tilde{X} \in \mathbb{R}^{N \times mn}$,
+sus valores singulares $\sigma_1 \geq \cdots \geq \sigma_{mn} \geq 0$ y la
+cantidad de valores singulares positivos $r$. Se cumple que $r = \text{rango}(\tilde{X})$
+y que existen las matrices ortogonales $U \in \mathbb{R}^{N \times N}$ y
+$V \in \mathbb{R}^{mn \times mn}$, y la matriz diagonal
+$\Sigma = \text{diag}(\sigma_1, \dots, \sigma_{\min(N, mn)}) \in \mathbb{R}^{N \times mn}$
+tales que:
+\[
+\tilde{X} = U\Sigma V^T
+\]
+
+\textbf{Demostración.}
+
+\textit{Paso 1.} Sean $V = [\mathbf{v}_1 \mid \cdots \mid \mathbf{v}_{mn}]$ y los
+$\sigma_i$ los definidos en la subsección anterior; es decir, $\mathbf{v}_i$ es un
+eigenvector unitario de $\tilde{X}^T\tilde{X}$ con eigenvalor $\sigma_i^2$, y
+$\sigma_1 \geq \cdots \geq \sigma_r > 0 = \sigma_{r+1} = \cdots = \sigma_{mn}$.
+Se vio que:
+\[
+\|\tilde{X}\mathbf{v}_i\|^2 = \sigma_i^2 \qquad \forall \, i \in \{1, 2, \dots, mn\}
+\]
+
+\textit{Paso 2.} Sea $i > r$. Por el paso 1, $\|\tilde{X}\mathbf{v}_i\|^2 = \sigma_i^2 = 0$;
+por tanto:
+\[
+\tilde{X}\mathbf{v}_i = \mathbf{0} \qquad \forall \, i > r
+\]
+
+\textit{Paso 3.} Sean $i, j \in \{1, 2, \dots, r\}$ con $i \neq j$. Se tiene:
+\[
+(\tilde{X}\mathbf{v}_i)^T(\tilde{X}\mathbf{v}_j)
+= \mathbf{v}_i^T(\tilde{X}^T\tilde{X}\,\mathbf{v}_j)
+= \sigma_j^2\,\mathbf{v}_i^T\mathbf{v}_j = 0
+\]
+Además, $\|\tilde{X}\mathbf{v}_i\| = \sigma_i > 0$. Por tanto,
+$\{\tilde{X}\mathbf{v}_1, \dots, \tilde{X}\mathbf{v}_r\}$ es un conjunto ortogonal de
+vectores no nulos y, en consecuencia, linealmente independiente.
+
+Sea ahora $\mathbf{y}$ en el espacio columna de $\tilde{X}$: existe
+$\mathbf{x} \in \mathbb{R}^{mn}$ tal que $\mathbf{y} = \tilde{X}\mathbf{x}$. Al ser
+ortonormales, las columnas de $V$ forman una base de $\mathbb{R}^{mn}$; luego
+$\mathbf{x} = \sum_{i=1}^{mn} c_i\mathbf{v}_i$ y, por el paso 2:
+\[
+\mathbf{y} = \sum_{i=1}^{mn} c_i\,\tilde{X}\mathbf{v}_i
+= \sum_{i=1}^{r} c_i\,\tilde{X}\mathbf{v}_i
+\]
+Por tanto, el espacio columna de $\tilde{X}$ es generado por
+$\{\tilde{X}\mathbf{v}_1, \dots, \tilde{X}\mathbf{v}_r\}$, que es linealmente
+independiente, y su dimensión es $r$. Así, $r = \text{rango}(\tilde{X})$ y, en
+particular, $r \leq \min(N, mn)$.
+
+\textit{Paso 4.} Se definen los vectores $\mathbf{u}_i \in \mathbb{R}^N$ tales que:
+\[
+\mathbf{u}_i = \frac{1}{\sigma_i}\tilde{X}\mathbf{v}_i
+\qquad \forall \, i \in \{1, 2, \dots, r\}
+\]
+Lo cual es posible pues $\sigma_i > 0$ para todo $i \leq r$. Sean
+$i, j \in \{1, 2, \dots, r\}$. Por el paso 1 y el paso 3:
+\[
+\mathbf{u}_i^T\mathbf{u}_j
+= \frac{1}{\sigma_i\sigma_j}(\tilde{X}\mathbf{v}_i)^T(\tilde{X}\mathbf{v}_j)
+= \begin{cases}
+    \dfrac{\sigma_i^2}{\sigma_i^2} = 1 & i = j \\[2mm]
+    0 & i \neq j
+\end{cases}
+\]
+Por tanto, $\{\mathbf{u}_1, \dots, \mathbf{u}_r\}$ es un conjunto ortonormal
+de $\mathbb{R}^N$.
+
+\textit{Paso 5.} Todo conjunto ortonormal de $\mathbb{R}^N$ puede completarse
+hasta una base ortonormal de $\mathbb{R}^N$ (resultado estándar, por ejemplo
+mediante el proceso de Gram-Schmidt). Se eligen
+$\mathbf{u}_{r+1}, \dots, \mathbf{u}_N$ de modo que
+$\{\mathbf{u}_1, \dots, \mathbf{u}_N\}$ sea una base ortonormal y se define:
+\[
+U = [\mathbf{u}_1 \mid \mathbf{u}_2 \mid \cdots \mid \mathbf{u}_N]
+\in \mathbb{R}^{N \times N}
+\]
+Donde $U$ es ortogonal, pues sus columnas forman un conjunto ortonormal.
+
+\textit{Paso 6.} Se define la matriz $\Sigma = [s_{ij}] \in \mathbb{R}^{N \times mn}$
+tal que:
+\[
+s_{ij} = \begin{cases}
+    \sigma_i & i = j \\
+    0 & i \neq j
+\end{cases}
+\]
+Donde $\sigma_i = 0$ para $r < i \leq \min(N, mn)$. Sean
+$\mathbf{e}_i \in \mathbb{R}^{mn}$ y $\mathbf{f}_i \in \mathbb{R}^N$ los
+$i$-ésimos vectores canónicos de cada espacio. Entonces:
+\[
+\Sigma\mathbf{e}_i = \begin{cases}
+    \sigma_i\mathbf{f}_i & i \leq \min(N, mn) \\
+    \mathbf{0} & i > \min(N, mn)
+\end{cases}
+\qquad
+U\mathbf{f}_i = \mathbf{u}_i
+\]
+
+\textit{Paso 7.} Se verifica que $\tilde{X}V = U\Sigma$ comparando sus
+columnas. La columna $i$ de $\tilde{X}V$ es $\tilde{X}\mathbf{v}_i$, y la
+columna $i$ de $U\Sigma$ es $U\Sigma\mathbf{e}_i$. Se distinguen tres casos:
+\begin{itemize}
+    \item $i \leq r$: $U\Sigma\mathbf{e}_i = \sigma_i\mathbf{u}_i
+    = \tilde{X}\mathbf{v}_i$, por la definición de $\mathbf{u}_i$.
+    \item $r < i \leq \min(N, mn)$: $U\Sigma\mathbf{e}_i
+    = \sigma_i\mathbf{u}_i = \mathbf{0} = \tilde{X}\mathbf{v}_i$,
+    pues $\sigma_i = 0$ y por el paso 2.
+    \item $i > \min(N, mn)$: $U\Sigma\mathbf{e}_i = \mathbf{0}
+    = \tilde{X}\mathbf{v}_i$, pues $i > r$ y por el paso 2.
+\end{itemize}
+Por tanto, $\tilde{X}V = U\Sigma$. Al ser $V$ ortogonal y cuadrada, se tiene
+$VV^T = I$; multiplicando por $V^T$ a la derecha:
+\[
+\therefore \tilde{X} = U\Sigma V^T
+\]
