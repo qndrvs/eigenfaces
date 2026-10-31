@@ -452,3 +452,71 @@ $VV^T = I$; multiplicando por $V^T$ a la derecha:
 \[
 \therefore \tilde{X} = U\Sigma V^T
 \]
+
+
+\subsection{Vectores Singulares}
+
+Sea la descomposición $\tilde{X} = U\Sigma V^T$ con
+$U = [\mathbf{u}_1 \mid \cdots \mid \mathbf{u}_N]$ y
+$V = [\mathbf{v}_1 \mid \cdots \mid \mathbf{v}_{mn}]$. Se definen los
+\textbf{vectores singulares derechos} de $\tilde{X}$ como las columnas
+$\mathbf{v}_i$ de $V$, y los \textbf{vectores singulares izquierdos} de
+$\tilde{X}$ como las columnas $\mathbf{u}_i$ de $U$.
+
+Por la construcción de la SVD, se cumple:
+\[
+\tilde{X}\mathbf{v}_i = \sigma_i\mathbf{u}_i \quad \forall \, i \in \{1, 2, \dots, r\}
+\]
+Sustituyendo $\mathbf{u}_i = \frac{1}{\sigma_i}\tilde{X}\mathbf{v}_i$ y
+usando que $\mathbf{v}_i$ es eigenvector de $\tilde{X}^T\tilde{X}$ con
+eigenvalor $\sigma_i^2$:
+\[
+\tilde{X}^T\mathbf{u}_i
+= \frac{1}{\sigma_i}\tilde{X}^T\tilde{X}\,\mathbf{v}_i
+= \frac{1}{\sigma_i}\sigma_i^2\,\mathbf{v}_i
+= \sigma_i\mathbf{v}_i
+\]
+Es decir, $\tilde{X}$ transforma $\mathbf{v}_i$ en $\sigma_i\mathbf{u}_i$ y
+$\tilde{X}^T$ transforma $\mathbf{u}_i$ en $\sigma_i\mathbf{v}_i$.
+
+
+\subsection{Interpretación Geométrica de la SVD}
+
+A partir de los resultados anteriores, se interpreta cada factor de la
+descomposición $\tilde{X} = U\Sigma V^T$.
+
+\textbf{Direcciones de variación ($V$).} Cada $\mathbf{v}_i \in \mathbb{R}^{mn}$
+es un vector unitario del espacio de imágenes y, al reorganizar sus componentes
+como una imagen de $m \times n$ píxeles, se obtiene un patrón visual. Las
+$\mathbf{v}_i$ son ortogonales entre sí y están ordenadas de mayor a menor
+$\sigma_i$.
+
+\textbf{Dispersión en cada dirección ($\Sigma$).} Sea $\mathbf{p}_i = \tilde{X}\mathbf{v}_i
+\in \mathbb{R}^N$, cuya componente $j$ es la proyección $\tilde{\mathbf{x}}_j^T\mathbf{v}_i$
+de la imagen centrada $j$ sobre la dirección $\mathbf{v}_i$. Como los datos están centrados:
+\[
+\mathbf{1}^T\tilde{X} = \mathbf{1}^TX - \mathbf{1}^T\mathbf{1}\,\bar{\mathbf{x}}^T
+= N\bar{\mathbf{x}}^T - N\bar{\mathbf{x}}^T = \mathbf{0}
+\]
+Por tanto, $\mathbf{1}^T\mathbf{p}_i = (\mathbf{1}^T\tilde{X})\mathbf{v}_i = 0$;
+es decir, el promedio de las proyecciones es cero y su varianza es
+$\frac{1}{N-1}\|\mathbf{p}_i\|^2$. Como $\|\mathbf{p}_i\|^2 = \sigma_i^2$:
+\[
+\frac{1}{N-1}\|\mathbf{p}_i\|^2 = \frac{\sigma_i^2}{N-1}
+\]
+Que es el eigenvalor de $C$ asociado a $\mathbf{v}_i$, pues
+$C\mathbf{v}_i = \frac{1}{N-1}\tilde{X}^T\tilde{X}\,\mathbf{v}_i
+= \frac{\sigma_i^2}{N-1}\mathbf{v}_i$. Es decir, $\sigma_i$ mide cuánto se
+dispersan los rostros a lo largo de $\mathbf{v}_i$.
+
+\textbf{Coordenadas de las imágenes ($U\Sigma$).} Sea $U_{ji}$ la entrada $(j, i)$ de $U$.
+De $\tilde{X}V = U\Sigma$, comparando la entrada $(j, i)$ de ambos lados:
+\[
+\tilde{\mathbf{x}}_j^T\mathbf{v}_i = \sigma_i\,U_{ji}
+\qquad \forall \, i \in \{1, 2, \dots, r\}
+\]
+Por tanto, la coordenada de la imagen $j$ sobre la dirección $\mathbf{v}_i$ es
+$\sigma_i U_{ji}$, es decir, la entrada $(j, i)$ de $U\Sigma$. Las entradas de $U$
+son esas coordenadas divididas entre $\sigma_i$: cada columna $\mathbf{u}_i$ es un
+vector unitario que contiene las coordenadas normalizadas de las $N$ imágenes
+sobre $\mathbf{v}_i$.
