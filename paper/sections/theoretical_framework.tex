@@ -520,3 +520,173 @@ $\sigma_i U_{ji}$, es decir, la entrada $(j, i)$ de $U\Sigma$. Las entradas de $
 son esas coordenadas divididas entre $\sigma_i$: cada columna $\mathbf{u}_i$ es un
 vector unitario que contiene las coordenadas normalizadas de las $N$ imágenes
 sobre $\mathbf{v}_i$.
+
+
+\subsection{Eigenfaces y Subespacio de Rostros}
+ 
+Sea $k \in \{1, 2, \dots, r\}$. Se define la matriz $V_k \in \mathbb{R}^{mn \times k}$,
+formada por las primeras $k$ columnas de $V$, tal que:
+\[
+V_k = [\mathbf{v}_1 \mid \mathbf{v}_2 \mid \cdots \mid \mathbf{v}_k]
+\]
+Se definen las \textbf{eigenfaces} como los vectores $\mathbf{v}_1, \dots, \mathbf{v}_k$.
+Donde cada $\mathbf{v}_i \in \mathbb{R}^{mn}$ puede reorganizarse como una imagen de
+$m \times n$ píxeles, recuperando sus filas en orden (inverso de la vectorización).
+ 
+Como $\mathbf{1}^T\tilde{X} = \mathbf{0}$, las filas de $\tilde{X}$ son linealmente
+dependientes; por tanto, $r = \text{rango}(\tilde{X}) \leq N-1$ y, en consecuencia,
+$k \leq \min(N-1, mn)$.
+ 
+Se define el \textbf{subespacio de rostros} $S_k \subset \mathbb{R}^{mn}$ tal que:
+\[
+S_k = \text{gen}\{\mathbf{v}_1, \dots, \mathbf{v}_k\}
+\]
+Donde $\dim S_k = k$, pues $\{\mathbf{v}_1, \dots, \mathbf{v}_k\}$ es ortonormal y,
+por tanto, linealmente independiente.
+ 
+Sea la matriz $P_k = V_kV_k^T \in \mathbb{R}^{mn \times mn}$. Como las columnas de $V_k$
+son ortonormales, $V_k^TV_k = I_k$. Se cumple:
+\[
+P_k^T = (V_k^T)^TV_k^T = P_k \qquad \land \qquad P_k^2 = V_k(V_k^TV_k)V_k^T = P_k
+\]
+Además, para todo $\mathbf{z} \in \mathbb{R}^{mn}$, $P_k\mathbf{z} = \sum_{i=1}^{k}\langle \mathbf{v}_i, \mathbf{z}\rangle\,\mathbf{v}_i$
+es combinación lineal de $\mathbf{v}_1, \dots, \mathbf{v}_k$; por tanto, $P_k\mathbf{z} \in S_k$ y
+\[
+V_k^T(\mathbf{z} - P_k\mathbf{z}) = V_k^T\mathbf{z} - V_k^TV_kV_k^T\mathbf{z} = V_k^T\mathbf{z} - I_kV_k^T\mathbf{z} = \mathbf{0}
+\]
+Es decir, $\mathbf{z} - P_k\mathbf{z}$ es ortogonal a $S_k$ y, por tanto, $P_k$ es la
+\textbf{proyección ortogonal} sobre $S_k$.
+ 
+Sea $\mathbf{x} \in \mathbb{R}^{mn}$ una imagen vectorizada. Se definen sus
+\textbf{coordenadas en el espacio de rostros} $\mathbf{y} \in \mathbb{R}^k$ tal que:
+\[
+\mathbf{y} = V_k^T(\mathbf{x} - \bar{\mathbf{x}}) \iff
+[\mathbf{y}]_i = \langle \mathbf{v}_i,\, \mathbf{x} - \bar{\mathbf{x}} \rangle
+\quad \forall \, i \in \{1, 2, \dots, k\}
+\]
+Para las imágenes de entrenamiento, la fila $j$ de $Y = \tilde{X}V_k \in \mathbb{R}^{N \times k}$
+es $\mathbf{y}_j^T$, con $\mathbf{y}_j = V_k^T\tilde{\mathbf{x}}_j$. Como
+$\tilde{X}\mathbf{v}_i = \sigma_i\mathbf{u}_i$ para $i \leq k \leq r$:
+\[
+Y = \tilde{X}V_k = U_k\Sigma_k
+\]
+Donde $U_k = [\mathbf{u}_1 \mid \cdots \mid \mathbf{u}_k]$ y
+$\Sigma_k = \text{diag}(\sigma_1, \dots, \sigma_k)$. Esto confirma que las coordenadas
+de las imágenes son las entradas de $U_k\Sigma_k$ y no las de $U_k$.
+En la siguiente subsección se cuantifica cuánta información de
+$\tilde{X}$ conserva esta representación.
+ 
+ 
+\subsection{Aproximación de Rango $k$ y Varianza Explicada}
+ 
+Sea $A = [a_{ij}] \in \mathbb{R}^{p \times q}$. Se define la \textbf{norma de Frobenius}
+de $A$ tal que:
+\[
+\|A\|_F = \sqrt{\sum_{i=1}^{p}\sum_{j=1}^{q} a_{ij}^2} = \sqrt{\text{tr}(A^TA)}
+\]
+Como $VV^T = I$ y $VV^T = \sum_{i=1}^{mn}\mathbf{v}_i\mathbf{v}_i^T$, usando que
+$\tilde{X}\mathbf{v}_i = \sigma_i\mathbf{u}_i$ para $i \leq r$ y
+$\tilde{X}\mathbf{v}_i = \mathbf{0}$ para $i > r$ (paso 2 de la existencia de la SVD):
+\[
+\tilde{X} = \tilde{X}VV^T = \sum_{i=1}^{mn}(\tilde{X}\mathbf{v}_i)\mathbf{v}_i^T
+= \sum_{i=1}^{r}\sigma_i\,\mathbf{u}_i\mathbf{v}_i^T
+\]
+Se define la \textbf{aproximación de rango $k$} de $\tilde{X}$ tal que:
+\[
+\tilde{X}_k = \sum_{i=1}^{k}\sigma_i\,\mathbf{u}_i\mathbf{v}_i^T = U_k\Sigma_kV_k^T
+\]
+Donde $\text{rango}(\tilde{X}_k) \leq k$, por ser suma de $k$ matrices de rango $1$.
+Además, $\tilde{X}_k = \tilde{X}V_kV_k^T$, pues
+\[
+\tilde{X}V_kV_k^T = \sum_{i=1}^{k}(\tilde{X}\mathbf{v}_i)\mathbf{v}_i^T
+= \sum_{i=1}^{k}\sigma_i\,\mathbf{u}_i\mathbf{v}_i^T
+\]
+Es decir, la fila $j$ de $\tilde{X}_k$ es $(P_k\tilde{\mathbf{x}}_j)^T$: reconstruir las $N$
+imágenes centradas con $k$ eigenfaces equivale a calcular $\tilde{X}_k$.
+ 
+\textbf{Proposición.} $\|\tilde{X} - \tilde{X}_k\|_F^2 = \sum_{i=k+1}^{r}\sigma_i^2$.
+ 
+\textbf{Demostración.} Sea $M = \tilde{X} - \tilde{X}_k = \sum_{i=k+1}^{r}\sigma_i\mathbf{u}_i\mathbf{v}_i^T$.
+Como $\{\mathbf{u}_i\}$ es ortonormal:
+\[
+M^TM = \sum_{i=k+1}^{r}\sum_{t=k+1}^{r}\sigma_i\sigma_t\,\mathbf{v}_i(\mathbf{u}_i^T\mathbf{u}_t)\mathbf{v}_t^T
+= \sum_{i=k+1}^{r}\sigma_i^2\,\mathbf{v}_i\mathbf{v}_i^T
+\]
+Por tanto, usando $\text{tr}(\mathbf{v}_i\mathbf{v}_i^T) = \mathbf{v}_i^T\mathbf{v}_i = 1$:
+\[
+\|M\|_F^2 = \text{tr}(M^TM) = \sum_{i=k+1}^{r}\sigma_i^2
+\]
+$\therefore \|\tilde{X} - \tilde{X}_k\|_F^2 = \sum_{i=k+1}^{r}\sigma_i^2$.
+ 
+Se enuncia el \textbf{teorema de Eckart--Young} \cite{eckart1936approximation} tal que:
+\[
+\text{rango}(B) \leq k \implies \|\tilde{X} - \tilde{X}_k\|_F \leq \|\tilde{X} - B\|_F
+\qquad \forall \, B \in \mathbb{R}^{N \times mn}
+\]
+Este resultado se utilizará sin demostración. Sea $W \in \mathbb{R}^{mn \times k}$ con
+columnas ortonormales. Entonces $\tilde{X}WW^T$ tiene rango a lo sumo $k$ y, por el
+teorema, $\|\tilde{X} - \tilde{X}WW^T\|_F \geq \|\tilde{X} - \tilde{X}V_kV_k^T\|_F$.
+Es decir, entre todos los subespacios de dimensión $k$, el subespacio de rostros $S_k$
+minimiza el error cuadrático total de reconstrucción de las $N$ imágenes centradas.
+ 
+Por otro lado, por la ciclicidad de la traza y $\tilde{X}^T\tilde{X} = V\Lambda V^T$:
+\[
+\|\tilde{X}\|_F^2 = \text{tr}(\tilde{X}^T\tilde{X}) = \text{tr}(V\Lambda V^T)
+= \text{tr}(\Lambda V^TV) = \text{tr}(\Lambda) = \sum_{i=1}^{r}\sigma_i^2
+\]
+Se define la \textbf{varianza explicada} por las primeras $k$ eigenfaces tal que:
+\[
+\text{VE}(k) = \frac{\sum_{i=1}^{k}\sigma_i^2}{\sum_{i=1}^{r}\sigma_i^2}
+= 1 - \frac{\|\tilde{X} - \tilde{X}_k\|_F^2}{\|\tilde{X}\|_F^2}
+\]
+Donde la segunda igualdad se sigue de la proposición anterior. Como $\sigma_i^2/(N-1)$
+es la varianza de las proyecciones sobre $\mathbf{v}_i$, $\text{VE}(k)$ es la fracción de la
+varianza total capturada por $S_k$. Se cumple que $\text{VE}(k)$ es no decreciente en $k$ y
+que $\text{VE}(r) = 1$, lo cual permite elegir un $k$ que conserve una fracción
+deseada de la varianza. Con este criterio se construye, en la siguiente subsección,
+el procedimiento de reconocimiento.
+ 
+ 
+\subsection{Reconocimiento Facial}
+ 
+Sea el conjunto de entrenamiento $\{\mathbf{x}_1, \dots, \mathbf{x}_N\}$, donde la imagen
+$j$ pertenece a la persona $\ell_j$, y sea $k$ un entero fijo. Se define el
+\textbf{procedimiento de reconocimiento} mediante los siguientes pasos:
+\begin{enumerate}
+    \item Calcular $\bar{\mathbf{x}}$, $\tilde{X}$ y la SVD $\tilde{X} = U\Sigma V^T$, y
+    construir $V_k$.
+    \item Calcular las coordenadas $\mathbf{y}_j = V_k^T(\mathbf{x}_j - \bar{\mathbf{x}})$
+    de cada imagen de entrenamiento.
+    \item Dada una imagen nueva $\mathbf{x}$, calcular
+    $\mathbf{y} = V_k^T(\mathbf{x} - \bar{\mathbf{x}})$.
+    \item Calcular las distancias $d_j = \|\mathbf{y} - \mathbf{y}_j\|$ para todo
+    $j \in \{1, 2, \dots, N\}$.
+    \item Asignar a $\mathbf{x}$ la identidad $\ell_{j^*}$, donde
+    $j^* = \operatorname*{arg\,min}_{j} d_j$.
+\end{enumerate}
+El único parámetro del procedimiento es $k$; su efecto sobre la tasa de reconocimiento
+es el objeto de análisis de los experimentos.
+ 
+\textbf{Proposición.} Sean $\mathbf{x}, \mathbf{x}' \in \mathbb{R}^{mn}$ con coordenadas
+$\mathbf{y}, \mathbf{y}' \in \mathbb{R}^k$. Se cumple:
+\[
+\|\mathbf{y} - \mathbf{y}'\| \leq \|\mathbf{x} - \mathbf{x}'\|
+\]
+ 
+\textbf{Demostración.} Sea $\mathbf{z} = \mathbf{x} - \mathbf{x}'$. Se tiene
+$\mathbf{y} - \mathbf{y}' = V_k^T\mathbf{z}$ y:
+\[
+\|V_k^T\mathbf{z}\|^2 = \mathbf{z}^TV_kV_k^T\mathbf{z} = \mathbf{z}^TP_k\mathbf{z}
+= \|P_k\mathbf{z}\|^2
+\]
+pues $P_k^TP_k = P_k$. Como $P_k\mathbf{z}$ es ortogonal a $\mathbf{z} - P_k\mathbf{z}$,
+por el teorema de Pitágoras:
+\[
+\|\mathbf{z}\|^2 = \|P_k\mathbf{z}\|^2 + \|\mathbf{z} - P_k\mathbf{z}\|^2 \geq \|P_k\mathbf{z}\|^2
+\]
+$\therefore \|\mathbf{y} - \mathbf{y}'\| \leq \|\mathbf{x} - \mathbf{x}'\|$.
+ 
+Es decir, las distancias en el espacio de rostros nunca superan a las del espacio de
+imágenes: dos rostros cercanos en $\mathbb{R}^{mn}$ permanecen cercanos tras la
+proyección. La recíproca no se garantiza: dos imágenes distintas pueden quedar cercanas
+si difieren en direcciones fuera de $S_k$, lo cual motiva el estudio del efecto de $k$.
