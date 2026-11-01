@@ -690,3 +690,49 @@ Es decir, las distancias en el espacio de rostros nunca superan a las del espaci
 imágenes: dos rostros cercanos en $\mathbb{R}^{mn}$ permanecen cercanos tras la
 proyección. La recíproca no se garantiza: dos imágenes distintas pueden quedar cercanas
 si difieren en direcciones fuera de $S_k$, lo cual motiva el estudio del efecto de $k$.
+
+
+\subsection{Estado del Arte}
+ 
+\textbf{Representación de rostros mediante componentes principales.}
+Sirovich y Kirby \cite{sirovich1987low} propusieron caracterizar rostros humanos
+mediante el desarrollo de Karhunen--Loève, equivalente al análisis de componentes
+principales, de modo que cada rostro queda descrito, dentro de una cota de error,
+por un vector de baja dimensión. Kirby y Sirovich \cite{kirby1990application}
+extendieron el conjunto de datos con las imágenes espejo de los rostros, aprovechando
+su simetría, lo que mejora en promedio la aproximación de rostros externos al conjunto.
+ 
+\textbf{Eigenfaces.} Turk y Pentland \cite{turk1991eigenfaces} llevaron esta
+representación al reconocimiento: un rostro se describe como una suma ponderada de
+las eigenfaces y una persona se reconoce comparando esos pesos con los de individuos
+conocidos, en un sistema de tiempo casi real. Es el método que se implementa en el
+presente trabajo.
+ 
+\textbf{Limitaciones y variantes lineales.} Belhumeur et al.
+\cite{belhumeur1997eigenfaces} señalaron que el análisis de componentes principales
+elige las direcciones que maximizan la dispersión total de todas las imágenes,
+incluida la causada por cambios de iluminación y expresión, por lo que puede no ser
+óptimo para discriminar entre personas. Propusieron Fisherfaces, basado en el
+discriminante lineal de Fisher, y reportaron tasas de error menores que las de
+Eigenfaces en pruebas sobre las bases de datos de Harvard y de Yale, con variaciones
+de iluminación y expresión.
+ 
+\textbf{Aprendizaje profundo.} Los métodos posteriores aprenden la representación
+en lugar de calcularla de forma algebraica. DeepFace \cite{taigman2014deepface}
+emplea una red neuronal profunda de nueve capas con más de 120 millones de parámetros,
+entrenada con cuatro millones de imágenes de más de 4000 identidades, y alcanza
+una exactitud de 97.35\,\% en la base de datos LFW. FaceNet \cite{schroff2015facenet}
+aprende directamente un \textit{embedding} en un espacio euclídeo donde la distancia
+refleja la similitud entre rostros, de modo que el reconocimiento se reduce a una
+clasificación por vecinos más cercanos, y reporta 99.63\,\% en LFW.
+ 
+\textbf{Posicionamiento del presente trabajo.} Lo anterior muestra un compromiso.
+Los métodos profundos alcanzan mayor exactitud a cambio de grandes volúmenes de datos
+de entrenamiento y de representaciones aprendidas cuyo análisis algebraico no es
+directo; Eigenfaces, en cambio, obtiene su representación mediante una descomposición
+determinista cuyas direcciones pueden visualizarse y analizarse. Cabe notar que el
+paso final de FaceNet, la comparación por distancia en un espacio euclídeo, coincide
+con el de Eigenfaces; lo que cambia es cómo se obtiene ese espacio. El presente trabajo
+se ubica en el extremo interpretable: no busca competir en exactitud con los sistemas
+anteriores, sino reconstruir Eigenfaces desde sus fundamentos algebraicos y analizar
+cómo influye el número $k$ de componentes retenidas en el reconocimiento.
