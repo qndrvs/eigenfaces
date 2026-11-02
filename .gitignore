@@ -2,6 +2,7 @@
 *.aux
 *.log
 *.pdf
+!paper/images/*.pdf
 *.bbl
 *.blg
 

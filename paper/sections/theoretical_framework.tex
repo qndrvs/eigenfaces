@@ -26,6 +26,15 @@ a_{21}, \dots, a_{mn}]^T
 Donde $\mathbf{x}$ es el resultado de la concatenación de las filas de A en
 orden.
 
+La Fig.~\ref{fig:vectorizacion} ilustra este proceso.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig_vectorizacion.pdf}
+    \caption{Vectorización de una imagen: las filas de $A$ se concatenan en el vector $\mathbf{x}$ (ejemplo ilustrativo de $3\times3$ pixeles).}
+    \label{fig:vectorizacion}
+\end{figure}
+
 
 \subsection{Matriz de Datos}
 
@@ -521,6 +530,16 @@ son esas coordenadas divididas entre $\sigma_i$: cada columna $\mathbf{u}_i$ es 
 vector unitario que contiene las coordenadas normalizadas de las $N$ imágenes
 sobre $\mathbf{v}_i$.
 
+La Fig.~\ref{fig:svd} ilustra estas direcciones con datos sintéticos en dos
+dimensiones: $\mathbf{v}_1$ apunta hacia donde los datos se dispersan más.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig_svd_geometria.pdf}
+    \caption{Datos sintéticos en dos dimensiones y las direcciones $\mathbf{v}_1$ y $\mathbf{v}_2$ de la SVD de los datos centrados; la longitud de cada flecha es proporcional a $\sigma_i$.}
+    \label{fig:svd}
+\end{figure}
+
 
 \subsection{Eigenfaces y Subespacio de Rostros}
  
@@ -556,6 +575,15 @@ V_k^T(\mathbf{z} - P_k\mathbf{z}) = V_k^T\mathbf{z} - V_k^TV_kV_k^T\mathbf{z} = 
 \]
 Es decir, $\mathbf{z} - P_k\mathbf{z}$ es ortogonal a $S_k$ y, por tanto, $P_k$ es la
 \textbf{proyección ortogonal} sobre $S_k$.
+
+La Fig.~\ref{fig:proyeccion} ilustra esta proyección.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig_proyeccion.pdf}
+    \caption{Proyección ortogonal $P_k\mathbf{z}$ sobre el subespacio $S_k$ (ilustrado con $k=2$ en $\mathbb{R}^3$); el residuo $\mathbf{z}-P_k\mathbf{z}$ es ortogonal a $S_k$.}
+    \label{fig:proyeccion}
+\end{figure}
  
 Sea $\mathbf{x} \in \mathbb{R}^{mn}$ una imagen vectorizada. Se definen sus
 \textbf{coordenadas en el espacio de rostros} $\mathbf{y} \in \mathbb{R}^k$ tal que:
@@ -664,6 +692,16 @@ $j$ pertenece a la persona $\ell_j$, y sea $k$ un entero fijo. Se define el
     \item Asignar a $\mathbf{x}$ la identidad $\ell_{j^*}$, donde
     $j^* = \operatorname*{arg\,min}_{j} d_j$.
 \end{enumerate}
+
+El procedimiento se resume en la Fig.~\ref{fig:pipeline}.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig_pipeline.pdf}
+    \caption{Procedimiento de reconocimiento: entrenamiento (fila superior) y reconocimiento de una imagen nueva (fila inferior).}
+    \label{fig:pipeline}
+\end{figure}
+
 El único parámetro del procedimiento es $k$; su efecto sobre la tasa de reconocimiento
 es el objeto de análisis de los experimentos.
  
