@@ -1,0 +1,95 @@
+\section{Methodology}
+
+Esta sección describe el diseño experimental preliminar. Cada decisión busca que los
+resultados sean reproducibles y libres de sesgos por el uso indebido de datos de prueba.
+
+\subsection{Base de Datos}
+
+Se utiliza la base de datos AT\&T Database of Faces \cite{samaria1994parameterisation}, la cual
+contiene 400 imágenes de 40 personas en escala de grises; es decir, 10 imágenes por persona.
+Cada imagen tiene $92 \times 112$ píxeles (columnas $\times$ filas) con 256 niveles de gris
+(del 0 al 255). Las personas aparecen en posición frontal sobre un fondo homogéneo y, para
+algunas de ellas, las imágenes se tomaron en momentos distintos, con variaciones de
+iluminación, expresión facial y detalles faciales.
+
+Al representar cada imagen como una matriz $A \in \mathbb{R}^{112 \times 92}$, se tiene
+$mn = 10304$; por tanto, la matriz de covarianza $C$ tendría más de $10^8$ componentes,
+lo cual hace inviable su cálculo directo y motiva el uso de la SVD.
+
+Se asume que cada imagen contiene un rostro recortado y alineado. Las intensidades se leen
+como enteros de 0 a 255 y se convierten a punto flotante de doble precisión antes de
+centrar; no se normalizan a $[0,1]$, pues escalar todos los valores por igual no altera qué
+imagen queda más cercana.
+
+
+\subsection{Protocolo Experimental}
+
+Para cada persona se eligen al azar $n_{\text{ent}}$ imágenes de entrenamiento y las
+$10 - n_{\text{ent}}$ restantes de prueba, de modo que $N = 40\,n_{\text{ent}}$. Ninguna
+imagen de prueba participa en el cálculo de $\bar{\mathbf{x}}$, de la SVD ni de las
+coordenadas de entrenamiento.
+\begin{itemize}
+    \item \textbf{División principal:} $n_{\text{ent}} = 5$; es decir, $N = 200$ imágenes
+    de entrenamiento y 200 de prueba. Es una división balanceada, con un conjunto de prueba
+    del mismo tamaño que el de entrenamiento.
+    \item \textbf{Repeticiones:} $R = 20$ divisiones aleatorias con semillas fijas.
+    Se reporta la media y la desviación estándar, pues con 200 imágenes de prueba una
+    sola división puede favorecer o perjudicar el resultado por azar.
+    \item \textbf{Tamaño del entrenamiento:} $n_{\text{ent}} \in \{2, 3, \dots, 8\}$.
+    Esto permite contrastar la afirmación de que Eigenfaces opera con pocos datos.
+\end{itemize}
+
+\textbf{Elección de $k$.} Para no usar las imágenes de prueba al elegir $k$, se reporta la
+curva completa de la tasa de reconocimiento para $k = 1, \dots, N-1$. Además, el valor de
+operación se fija con el criterio de varianza explicada: el menor $k$ tal que
+$\text{VE}(k) \geq \tau$, con $\tau \in \{0.90, 0.95, 0.99\}$.
+Esta regla depende solo de los datos de entrenamiento. Si las coordenadas se calculan con
+las $N-1$ eigenfaces, la distancia que usa solo las primeras $k$ componentes es
+\[
+d_j^2(k) = \sum_{i=1}^{k}\big([\mathbf{y}]_i - [\mathbf{y}_j]_i\big)^2
+\]
+por lo que la curva completa se obtiene con una sola SVD por división.
+
+
+\subsection{Métricas y Líneas Base}
+
+Se define la \textbf{tasa de reconocimiento} como:
+\[
+\text{TR} = \frac{\text{imágenes de prueba identificadas correctamente}}
+{\text{total de imágenes de prueba}}
+\]
+Se reportan también $\text{VE}(k)$ y el error relativo de reconstrucción
+$\|\tilde{X} - \tilde{X}_k\|_F / \|\tilde{X}\|_F$ en función de $k$, que conectan los
+experimentos con la proposición sobre el error de aproximación y el teorema de
+Eckart--Young. Para interpretar $\text{TR}$ se usan dos líneas base:
+\begin{itemize}
+    \item \textbf{Azar:} con 40 personas, $\text{TR} = 1/40 = 2.5\,\%$.
+    \item \textbf{Vecino más cercano en píxeles:} el mismo criterio de distancia mínima,
+    pero en $\mathbb{R}^{mn}$, sin reducción. Permite medir qué se gana o se pierde al
+    pasar de $mn$ a $k$ dimensiones.
+\end{itemize}
+
+
+\subsection{Implementación y Verificación}
+
+El sistema se implementa en Python con NumPy; Matplotlib se usa solo para las figuras. Se
+emplea la SVD delgada de $\tilde{X}$ (\texttt{numpy.linalg.svd} con
+\texttt{full\_matrices=False}): como $N \ll mn$, evita construir $C$ y la matriz $V$
+completa, y basta con sus primeras $N$ columnas, pues $\tilde{X}\mathbf{v}_i = \mathbf{0}$
+para $i > r$. El código se organiza en cuatro módulos: carga y partición de los datos,
+modelo (ajuste, proyección y clasificación), evaluación de los experimentos y pruebas.
+Las dependencias se fijan por versión y las semillas son explícitas.
+
+Para unir la teoría con el código, se incluyen pruebas automáticas que verifican con
+tolerancia numérica los resultados del marco teórico:
+\begin{itemize}
+    \item $V^TV = I$ y $\tilde{X}V = U\Sigma$;
+    \item $\|\tilde{X} - \tilde{X}_k\|_F^2 = \sum_{i=k+1}^{r}\sigma_i^2$;
+    \item $\|\mathbf{y} - \mathbf{y}'\| \leq \|\mathbf{x} - \mathbf{x}'\|$;
+    \item $\mathbf{1}^T\tilde{X} = \mathbf{0}$, es decir, $r \leq N-1$;
+    \item $\sigma_i^2$ coincide con los eigenvalores de $\tilde{X}^T\tilde{X}$ en un
+    subconjunto pequeño de píxeles, donde sí es factible calcularlos.
+\end{itemize}
+Como contraste adicional, las proyecciones se comparan, salvo el signo de cada eigenface,
+con las de \texttt{scikit-learn} únicamente dentro de las pruebas; esta biblioteca no forma
+parte del sistema.
