@@ -38,7 +38,7 @@ La Fig.~\ref{fig:vectorizacion} ilustra este proceso.
 
 \subsection{Matriz de Datos}
 
-Sea un conjunto de $N$ imágenes y la matriz vectorizada $\mathbf{x}_{i}$ que
+Sea un conjunto de $N$ imágenes y el vector asociado $\mathbf{x}_i$ que
 representa a la imagen $i \in \{1, 2, \dots, N\}$. Se define \textbf{la matriz
 de datos} $X \in \mathbb{R}^{N \times mn}$ tal que:
 \[
@@ -91,7 +91,7 @@ Donde $i, j \in \{1, 2, \dots, mn\}$ y $\tilde{x}_{kp}$ es el valor del pixel $p
 en la imagen centrada $k$. Si el valor de $c_{ij}$ es grande implica que ambos pixeles
 varían de forma correlacionada entre rostros distintos; es decir, pertenecen al mismo
 patrón de variación facial. La identificación de estos patrones es fundamental para
-determinar qué combinaciones de pixeles son las más discriminativas entre rostros.
+determinar qué combinaciones de pixeles son las que más varían entre rostros.
 
 
 \subsection{Matriz de Covarianza}
@@ -456,10 +456,10 @@ columna $i$ de $U\Sigma$ es $U\Sigma\mathbf{e}_i$. Se distinguen tres casos:
     \item $i > \min(N, mn)$: $U\Sigma\mathbf{e}_i = \mathbf{0}
     = \tilde{X}\mathbf{v}_i$, pues $i > r$ y por el paso 2.
 \end{itemize}
-Por tanto, $\tilde{X}V = U\Sigma$. Al ser $V$ ortogonal y cuadrada, se tiene
-$VV^T = I$; multiplicando por $V^T$ a la derecha:
+Por tanto, $\tilde{X}V = U\Sigma$. Como $V$ es cuadrada y $V^TV = I$, $V^T$ es la
+inversa de $V$; en consecuencia, $VV^T = I$, así:
 \[
-\therefore \tilde{X} = U\Sigma V^T
+\therefore \tilde{X} = \tilde{X}VV^T = U\Sigma V^T
 \]
 
 
@@ -648,8 +648,8 @@ $\therefore \|\tilde{X} - \tilde{X}_k\|_F^2 = \sum_{i=k+1}^{r}\sigma_i^2$.
  
 Se enuncia el \textbf{teorema de Eckart--Young} \cite{eckart1936approximation} tal que:
 \[
+\forall \, B \in \mathbb{R}^{N \times mn}: \quad
 \text{rango}(B) \leq k \implies \|\tilde{X} - \tilde{X}_k\|_F \leq \|\tilde{X} - B\|_F
-\qquad \forall \, B \in \mathbb{R}^{N \times mn}
 \]
 Este resultado se utilizará sin demostración. Sea $W \in \mathbb{R}^{mn \times k}$ con
 columnas ortonormales. Entonces $\tilde{X}WW^T$ tiene rango a lo sumo $k$ y, por el
