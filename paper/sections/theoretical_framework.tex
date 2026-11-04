@@ -1,5 +1,9 @@
 \section{Theoretical Framework}
 
+Salvo que se indique lo contrario, $N$ es el número de imágenes, $mn$ el número de
+píxeles de cada imagen, $r$ el rango de $\tilde{X}$ y $k$ el número de eigenfaces
+retenidas. Los demás índices son locales a cada subsección.
+
 \subsection{Representación Matricial de Imágenes}
 
 Sea una imagen en escala de grises de $m \times n$ pixeles. Se define
@@ -23,7 +27,7 @@ $\mathbf{x} \in \mathbb{R}^{mn}$ tal que:
 \mathbf{x} = \text{vec}(A) = [a_{11}, a_{12}, \dots, a_{1n},
 a_{21}, \dots, a_{mn}]^T
 \]
-Donde $\mathbf{x}$ es el resultado de la concatenación de las filas de A en
+Donde $\mathbf{x}$ es el resultado de la concatenación de las filas de $A$ en
 orden.
 
 La Fig.~\ref{fig:vectorizacion} ilustra este proceso.
@@ -38,15 +42,15 @@ La Fig.~\ref{fig:vectorizacion} ilustra este proceso.
 
 \subsection{Matriz de Datos}
 
-Sea un conjunto de $N$ imágenes y el vector asociado $\mathbf{x}_i$ que
-representa a la imagen $i \in \{1, 2, \dots, N\}$. Se define \textbf{la matriz
+Sea un conjunto de $N$ imágenes y el vector asociado $\mathbf{x}_j$ que
+representa a la imagen $j \in \{1, 2, \dots, N\}$. Se define \textbf{la matriz
 de datos} $X \in \mathbb{R}^{N \times mn}$ tal que:
 \[
 X = \begin{bmatrix}
     \mathbf{x}_1^T \\ \mathbf{x}_2^T \\ \vdots \\ \mathbf{x}_N^T
 \end{bmatrix}
 \]
-Donde $\mathbf{x}_i$ representa la fila $i$ de $X$. Esta representación permite
+Donde $\mathbf{x}_j$ representa la fila $j$ de $X$. Esta representación permite
 tratar cada imagen como un punto en un espacio vectorial de dimensión $mn$,
 haciendo posible el análisis estadístico que se desarrolla en las secciones
 siguientes.
@@ -58,7 +62,7 @@ Sea el conjunto de $N$ imágenes vectorizadas y la matriz $X$ conformada
 por el conjunto de imágenes vectorizadas. Se define el \textbf{rostro promedio}
 $\bar{\mathbf{x}} \in \mathbb{R}^{mn}$ tal que:
 \[
-\bar{\mathbf{x}} = \frac{1}{N} \sum_{i=1}^{N} \mathbf{x}_i
+\bar{\mathbf{x}} = \frac{1}{N} \sum_{j=1}^{N} \mathbf{x}_j
 \]
 Al conseguir este ``rostro promedio'', podemos realizar el proceso de centrado de
 datos el cual consiste en restar el ``rostro promedio'' a cada imagen vectorizada.
@@ -73,10 +77,9 @@ Se define la \textbf{matriz de datos centrados} $\tilde{X} \in
 \[
 \tilde{X} = X - \mathbf{1}\bar{\mathbf{x}}^T
 \]
-Donde \textbf{1} $= [1, 1, \dots, 1]^T \in \mathbb{R}^N$. Este proceso es crucial
-para el análisis posterior, pues se captura las direcciones de la máxima
-varianza entre rostros en lugar de  obtener características simples del
-rostro promedio.
+Donde $\mathbf{1} = [1, 1, \dots, 1]^T \in \mathbb{R}^N$. Este proceso es crucial
+para el análisis posterior: al restar el rostro promedio, el análisis se concentra
+en cómo varían los rostros entre sí y no en lo que todos comparten.
 
 
 \subsection{Covarianza entre Píxeles}
@@ -85,10 +88,10 @@ Sea el conjunto de $N$ imágenes centradas, la matriz de datos centrados $\tilde
 y los pixeles en posición $i$ y $j$ de cada imagen centrada. Se define la
 \textbf{covarianza} $c_{ij} \in \mathbb{R}$ entre los pixeles $i$ y $j$ tal que:
 \[
-c_{ij} = \frac{1}{N-1}\sum_{k=1}^{N} \tilde{x}_{ki}\,\tilde{x}_{kj}
+c_{ij} = \frac{1}{N-1}\sum_{t=1}^{N} \tilde{x}_{ti}\,\tilde{x}_{tj}
 \]
-Donde $i, j \in \{1, 2, \dots, mn\}$ y $\tilde{x}_{kp}$ es el valor del pixel $p$
-en la imagen centrada $k$. Si el valor de $c_{ij}$ es grande implica que ambos pixeles
+Donde $i, j \in \{1, 2, \dots, mn\}$ y $\tilde{x}_{tp}$ es el valor del pixel $p$
+en la imagen centrada $t$. Si el valor de $c_{ij}$ es grande implica que ambos pixeles
 varían de forma correlacionada entre rostros distintos; es decir, pertenecen al mismo
 patrón de variación facial. La identificación de estos patrones es fundamental para
 determinar qué combinaciones de pixeles son las que más varían entre rostros.
@@ -104,7 +107,7 @@ C = \frac{1}{N-1}\tilde{X}^T\tilde{X}
 \]
 Pues, por definición de la multiplicación matricial:
 \[
-c_{ij} = \frac{1}{N-1}\sum_{k=1}^{N} \tilde{x}_{ki}\,\tilde{x}_{kj}
+c_{ij} = \frac{1}{N-1}\sum_{t=1}^{N} \tilde{x}_{ti}\,\tilde{x}_{tj}
 \qquad \forall \, i, j \in \{1, 2, \dots, mn\}
 \]
 Donde $c_{ij}$ representa la covarianza entre el pixel $i$ y $j$
@@ -112,13 +115,12 @@ a lo largo de las $N$ imágenes, capturando simultáneamente todos los patrones
 de variación entre rostros. Esta estructura es la base matemática para
 identificar las direcciones en las cuales los rostros más se diferencian entre sí.
 
-Al ser imágenes de $m \times n$ pixeles implica que $C$ tiene dimensión de $mn \times mn$;
-por tanto, para imágenes de $100 \times 100$ pixeles la matriz $C$ tendrá
-$10000 \times 10000$ componentes, lo cual hace computacionalmente inviable el 
-tratar con esta matriz al calcular o almacenar directamente. Este problema de
-dimensionalidad impulsa el uso de Singular Value Decomposition (SVD) la cual
-permite obtener información relevante de $C$ sin necesidad de calcular
-directamente.
+Al ser imágenes de $m \times n$ píxeles, $C$ tiene dimensión $mn \times mn$; por tanto,
+para imágenes de $92 \times 112$ píxeles, como las de la base de datos de este trabajo,
+la matriz $C$ tendría $10304 \times 10304$ componentes, más de $10^8$ entradas, lo cual
+hace computacionalmente inviable calcularla o almacenarla directamente. Este problema de
+dimensionalidad impulsa el uso de la Singular Value Decomposition (SVD), que permite
+obtener la información relevante de $C$ sin necesidad de calcularla.
 
 
 \subsection{Eigenvectores y Eigenvalores}
@@ -138,7 +140,7 @@ factor $\lambda$ sin alterar su orientación. Un $|\lambda|$ elevado implica
 un alargamiento fuerte en esa dirección, mientras que $\lambda = 0$ implica
 que $A$ colapsa esa dirección.
 
-Esta noción es crucial para el posterior análisis a $C$; pues, los eigenvectores
+Esta noción es crucial para el posterior análisis de $C$; pues, los eigenvectores
 de $C$ son las direcciones de máxima varianza en el espacio de imágenes y sus
 eigenvalores indican el valor de esta varianza.
 
