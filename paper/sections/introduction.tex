@@ -21,13 +21,13 @@ por qué funciona, un modelo ininterpretable no permite derivar mejoras teórica
 El presente trabajo propone un sistema alternativo basado en álgebra lineal: el algoritmo Eigenfaces
 planteado por Turk y Pentland en 1991 como una de las soluciones pioneras computacionalmente viables
 al problema del reconocimiento facial teniendo en cuenta la limitada capacidad computacional de ese
-entonces al reemplazar la comparación pixel por pixel a la proyección de rostros en un subespacio
+entonces al reemplazar la comparación píxel por píxel a la proyección de rostros en un subespacio
 con menor dimensión.
 A diferencia de los sistemas que hacen uso de las redes neuronales, los cuales se denominan
 como ``caja negra'' debido a su ininterpretabilidad, Eigenfaces exhibe los patrones de variación
 utilizados para el reconocimiento de rostros, permitiendo así el análisis e interpretación
 del proceso de reconocimiento. El sistema es construido en Python haciendo uso exclusivo de la
-librería Numpy con el fin de conservar la mayor transparencia posible de la estructura algebraica.
+librería NumPy con el fin de conservar la mayor transparencia posible de la estructura algebraica.
 En la actualidad, pese a ser un sistema menos preciso que el sistema basado en redes neuronales,
 Eigenfaces conserva importancia en ser aprendido como modelo de estudio, pues al exponer de
 manera explícita los fundamentos matemáticos del reconocimiento de patrones (reducción 
@@ -38,7 +38,7 @@ y no limitarse a solo aplicar lo ya establecido.
 
 Se establecen los siguientes objetivos específicos para el presente trabajo:
 (1) implementación del algoritmo Eigenfaces haciendo uso exclusivo de operaciones
-de álgebra lineal sobre Numpy;
+de álgebra lineal sobre NumPy;
 (2) análisis de las implicaciones de los números de componentes utilizados $k$
 sobre la tasa de reconocimiento del sistema; y
 (3) demostración de que un modelo matemáticamente interpretable es viable

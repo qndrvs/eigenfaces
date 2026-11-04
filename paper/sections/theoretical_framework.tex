@@ -6,11 +6,11 @@ retenidas. Los demás índices son locales a cada subsección.
 
 \subsection{Representación Matricial de Imágenes}
 
-Sea una imagen en escala de grises de $m \times n$ pixeles. Se define
+Sea una imagen en escala de grises de $m \times n$ píxeles. Se define
 la \textbf{representación de la imagen} ${A = [a_{ij}]} \in \mathbb{R}^{m \times n}$
 tal que:
 \[
-a_{ij} \text{: valor de intensidad del pixel en la fila $i$ y columna $j$}
+a_{ij} \text{: valor de intensidad del píxel en la fila $i$ y columna $j$}
 \]
 Donde $a_{ij} \in [0, 255]$. Para poder aplicar herramientas de álgebra lineal
 de la manera adecuada sobre un conjunto de imágenes es necesario representar
@@ -21,7 +21,7 @@ a cada matriz que represente una imagen.
 \subsection{Vectorización de una Matriz}
 
 Sea la matriz $A = [a_{ij}] \in \mathbb{R}^{m \times n}$ que representa a una
-imagen de $m \times n$ pixeles. Se define el \textbf{vector asociado}
+imagen de $m \times n$ píxeles. Se define el \textbf{vector asociado}
 $\mathbf{x} \in \mathbb{R}^{mn}$ tal que:
 \[
 \mathbf{x} = \text{vec}(A) = [a_{11}, a_{12}, \dots, a_{1n},
@@ -35,7 +35,7 @@ La Fig.~\ref{fig:vectorizacion} ilustra este proceso.
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig_vectorizacion.pdf}
-    \caption{Vectorización de una imagen: las filas de $A$ se concatenan en el vector $\mathbf{x}$ (ejemplo ilustrativo de $3\times3$ pixeles).}
+    \caption{Vectorización de una imagen: las filas de $A$ se concatenan en el vector $\mathbf{x}$ (ejemplo ilustrativo de $3\times3$ píxeles).}
     \label{fig:vectorizacion}
 \end{figure}
 
@@ -85,16 +85,16 @@ en cómo varían los rostros entre sí y no en lo que todos comparten.
 \subsection{Covarianza entre Píxeles}
 
 Sea el conjunto de $N$ imágenes centradas, la matriz de datos centrados $\tilde{X}$
-y los pixeles en posición $i$ y $j$ de cada imagen centrada. Se define la
-\textbf{covarianza} $c_{ij} \in \mathbb{R}$ entre los pixeles $i$ y $j$ tal que:
+y los píxeles en posición $i$ y $j$ de cada imagen centrada. Se define la
+\textbf{covarianza} $c_{ij} \in \mathbb{R}$ entre los píxeles $i$ y $j$ tal que:
 \[
 c_{ij} = \frac{1}{N-1}\sum_{t=1}^{N} \tilde{x}_{ti}\,\tilde{x}_{tj}
 \]
-Donde $i, j \in \{1, 2, \dots, mn\}$ y $\tilde{x}_{tp}$ es el valor del pixel $p$
-en la imagen centrada $t$. Si el valor de $c_{ij}$ es grande implica que ambos pixeles
+Donde $i, j \in \{1, 2, \dots, mn\}$ y $\tilde{x}_{tp}$ es el valor del píxel $p$
+en la imagen centrada $t$. Si el valor de $c_{ij}$ es grande implica que ambos píxeles
 varían de forma correlacionada entre rostros distintos; es decir, pertenecen al mismo
 patrón de variación facial. La identificación de estos patrones es fundamental para
-determinar qué combinaciones de pixeles son las que más varían entre rostros.
+determinar qué combinaciones de píxeles son las que más varían entre rostros.
 
 
 \subsection{Matriz de Covarianza}
@@ -110,7 +110,7 @@ Pues, por definición de la multiplicación matricial:
 c_{ij} = \frac{1}{N-1}\sum_{t=1}^{N} \tilde{x}_{ti}\,\tilde{x}_{tj}
 \qquad \forall \, i, j \in \{1, 2, \dots, mn\}
 \]
-Donde $c_{ij}$ representa la covarianza entre el pixel $i$ y $j$
+Donde $c_{ij}$ representa la covarianza entre el píxel $i$ y $j$
 a lo largo de las $N$ imágenes, capturando simultáneamente todos los patrones
 de variación entre rostros. Esta estructura es la base matemática para
 identificar las direcciones en las cuales los rostros más se diferencian entre sí.
