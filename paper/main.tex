@@ -26,12 +26,13 @@
 \maketitle
 
 \begin{abstract}
-Los sistemas de reconocimiento facial modernos basados en redes neuronales 
-presentan evidentes limitaciones en cuanto a interpretación matemática y costo computacional.
+Los sistemas de reconocimiento facial modernos basados en redes neuronales presentan
+limitaciones de interpretación matemática y suelen requerir grandes volúmenes de datos
+y de cómputo para su entrenamiento.
 En el presente trabajo, se propone un sistema de reconocimiento facial basado en el algoritmo 
 de Eigenfaces, desarrollado por Turk y Pentland (1991), haciendo uso de Principal Component 
 Analysis (PCA) a través de la Singular Value Decomposition (SVD).
-La implementación se realizará en Python haciendo uso exclusivo de NumPy, evitando librerías 
+La implementación se realizará en Python haciendo uso exclusivo de NumPy, evitando bibliotecas 
 de alto nivel, con el fin de exponer la estructura algebraica del reconocimiento de patrones faciales.
 Se emplea la base de datos AT\&T Database of Faces para la evaluación del sistema.
 El sistema representa cada imagen como un vector en un espacio de alta dimensión, 
